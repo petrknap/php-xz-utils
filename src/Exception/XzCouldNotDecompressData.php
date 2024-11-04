@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PetrKnap\XzUtils\Exception;
 
-use PetrKnap\Shorts\Exception\CouldNotProcessData;
-
 /**
- * @extends CouldNotProcessData<string>
+ * @deprecated catch {@see CouldNotDecompressData}
+ *
+ * @todo remove it
  */
-final class XzCouldNotDecompressData extends CouldNotProcessData implements XzException
+final class XzCouldNotDecompressData extends CouldNotDecompressData implements XzException
 {
 }
