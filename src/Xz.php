@@ -4,71 +4,33 @@ declare(strict_types=1);
 
 namespace PetrKnap\XzUtils;
 
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 use Throwable;
 
-final class Xz
+/**
+ * @extends XzUtils<Exception\XzException>
+ */
+final class Xz extends XzUtils
 {
-    /**
-     * @param array<non-empty-string> $options
-     *
-     * @throws Exception\XzCouldNotCompressData
-     */
-    public function compress(
-        string $data,
-        int|null $compressionPreset = null,
-        array $options = [],
-    ): string {
-        $command = [
-            'xz',
-            '--compress',
-        ];
-        if ($compressionPreset !== null) {
-            $command[] = '-' . $compressionPreset;
-        }
-        try {
-            return self::run(array_merge($command, $options), $data);
-        } catch (Throwable $reason) {
-            throw new Exception\XzCouldNotCompressData(__METHOD__, $data, $reason);
-        }
-    }
-
-    /**
-     * @param array<non-empty-string> $options
-     *
-     * @throws Exception\XzCouldNotDecompressData
-     */
-    public function decompress(
-        string $data,
-        array $options = [],
-    ): string {
-        $command = [
-            'xz',
-            '--decompress',
-        ];
-        try {
-            return self::run(array_merge($command, $options), $data);
-        } catch (Throwable $reason) {
-            throw new Exception\XzCouldNotDecompressData(__METHOD__, $data, $reason);
-        }
-    }
-
-    /**
-     * @param non-empty-array<non-empty-string> $command
-     *
-     * @throws ProcessFailedException
-     *
-     * @todo move it to another package
-     */
-    private static function run(array $command, string $input): string
+    protected static function command(): string
     {
-        $process = new Process($command);
-        $process->setInput($input);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-        return $process->getOutput();
+        return 'xz';
+    }
+
+    protected static function couldNotCompressData(string $data, Throwable $reason): never
+    {
+        throw new Exception\XzCouldNotCompressData(
+            self::class,
+            $data,
+            $reason,
+        );
+    }
+
+    protected static function couldNotDecompressData(string $data, Throwable $reason): never
+    {
+        throw new Exception\XzCouldNotDecompressData(
+            self::class,
+            $data,
+            $reason,
+        );
     }
 }
