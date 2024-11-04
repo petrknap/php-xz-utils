@@ -20,7 +20,8 @@ final class ReadmeTest extends TestCase implements MarkdownFileTestInterface
     public static function getExpectedOutputsOfPhpExamples(): iterable
     {
         return [
-            'ext-xz' => '',
+            'ext-xz' => '`data` was decoded from encoded base64(`/Td6WFoAAATm1rRGAgAhARYAAAB0L+WjAQADZGF0YQB/b0adkp8pwwABHARvLJzBH7bzfQEAAAAABFla`)',
+            'object-based-approach-recommended' => '`data` was decompressed from compressed base64(`/Td6WFoAAATm1rRGAgAhARYAAAB0L+WjAQADZGF0YQB/b0adkp8pwwABHARvLJzBH7bzfQEAAAAABFla`)',
         ];
     }
 }
