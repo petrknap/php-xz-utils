@@ -11,14 +11,15 @@ use Throwable;
 /**
  * @internal shared logic
  *
- * @template TException of Exception\Exception
+ * @template TCompressException of Exception\CouldNotCompressData
+ * @template TDecompressException of Exception\CouldNotDecompressData
  */
 abstract class XzUtils
 {
     /**
      * @param array<non-empty-string> $options
      *
-     * @throws TException&Exception\CouldNotCompressData
+     * @throws TCompressException&Exception\CouldNotCompressData
      */
     final public function compress(
         string $data,
@@ -32,14 +33,14 @@ abstract class XzUtils
         try {
             return self::applyFilter($options, $data);
         } catch (Throwable $reason) {
-            static::couldNotCompressData($data, $reason);
+            throw new (static::compressException())(__METHOD__, $data, $reason);
         }
     }
 
     /**
      * @param array<non-empty-string> $options
      *
-     * @throws TException&Exception\CouldNotDecompressData
+     * @throws TDecompressException&Exception\CouldNotDecompressData
      */
     final public function decompress(
         string $data,
@@ -49,24 +50,24 @@ abstract class XzUtils
         try {
             return self::applyFilter($options, $data);
         } catch (Throwable $reason) {
-            static::couldNotDecompressData($data, $reason);
+            throw new (static::decompressException())(__METHOD__, $data, $reason);
         }
     }
 
     /**
-     * @return 'xz'
+     * @return 'lzma'|'xz'
      */
     abstract protected static function command(): string;
 
     /**
-     * @throws TException&Exception\CouldNotCompressData
+     * @return class-string<TCompressException&Exception\CouldNotCompressData>
      */
-    abstract protected static function couldNotCompressData(string $data, Throwable $reason): never;
+    abstract protected static function compressException(): string;
 
     /**
-     * @throws TException&Exception\CouldNotDecompressData
+     * @return class-string<TDecompressException&Exception\CouldNotDecompressData>
      */
-    abstract protected static function couldNotDecompressData(string $data, Throwable $reason): never;
+    abstract protected static function decompressException(): string;
 
     /**
      * @param array<non-empty-string> $options

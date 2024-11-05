@@ -2,6 +2,36 @@
 
 declare(strict_types=1);
 
+if (!function_exists('lzmaencode')) {
+    /**
+     * @see gzencode()
+     * @see PetrKnap\XzUtils\Lzma::compress()
+     */
+    function lzmaencode(string $data, int|null $compressionPreset = null): string|false
+    {
+        try {
+            return (new PetrKnap\XzUtils\Lzma())->compress($data, $compressionPreset);
+        } catch (Throwable) {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('lzmadecode')) {
+    /**
+     * @see gzdecode()
+     * @see PetrKnap\XzUtils\Lzma::decompress()
+     */
+    function lzmadecode(string $data): string|false
+    {
+        try {
+            return (new PetrKnap\XzUtils\Lzma())->decompress($data);
+        } catch (Throwable) {
+            return false;
+        }
+    }
+}
+
 if (!function_exists('xzencode')) {
     /**
      * @see gzencode()

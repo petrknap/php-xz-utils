@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace PetrKnap\XzUtils;
 
 /**
- * @extends XzUtils<Exception\XzCouldNotCompressData,Exception\XzCouldNotDecompressData>
+ * @extends XzUtils<Exception\LzmaCouldNotCompressData,Exception\LzmaCouldNotDecompressData>
  */
-final class Xz extends XzUtils
+final class Lzma extends XzUtils
 {
     protected static function command(): string
     {
-        return 'xz';
+        return 'lzma';
     }
 
     protected static function compressException(): string
     {
-        return Exception\XzCouldNotCompressData::class;
+        return Exception\LzmaCouldNotCompressData::class;
     }
 
     protected static function decompressException(): string
     {
-        return Exception\XzCouldNotDecompressData::class;
+        return Exception\LzmaCouldNotDecompressData::class;
     }
 }
