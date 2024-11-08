@@ -1,5 +1,4 @@
 {
-  "WARNING": "This file is updated automatically. All keys will be overwritten, except of 'conflict', 'keywords', 'require', 'require-dev', 'scripts' and 'suggest'.",
   "autoload": {
     "psr-4": {
       "PetrKnap\\XzUtils\\": "src"
@@ -26,18 +25,19 @@
   ],
   "homepage": "https://github.com/petrknap/php-xz-utils",
   "keywords": [
-    "xz utils",
+    "xz-utils",
     "wrapper",
     "compression",
     "decompression",
-    "xz"
+    "xz",
+    "lzma"
   ],
   "license": "LGPL-3.0-or-later",
   "name": "petrknap/xz-utils",
   "require": {
     "php": ">=8.1",
-    "petrknap/shorts": "^2.0|^3.0",
-    "symfony/process": "^4.0|^5.0|^6.0|^7.0"
+    "petrknap/external-filter": "^1.0",
+    "petrknap/shorts": "^2.0|^3.0"
   },
   "require-dev": {
     "nunomaduro/phpinsights": "^2.11",

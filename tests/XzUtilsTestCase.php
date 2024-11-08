@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PetrKnap\XzUtils;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(FilterFactory::class)]
 abstract class XzUtilsTestCase extends TestCase
 {
     private const DATA_B64 = 'h/J4V2gAK1njeEOqyTiTjg==';
