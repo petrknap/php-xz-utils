@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PetrKnap\XzUtils;
 
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use Throwable;
+use PetrKnap\ExternalFilter\Exception\FilterException;
 
 /**
  * @internal shared logic
@@ -26,13 +24,9 @@ abstract class XzUtils
         int|null $compressionPreset = null,
         array $options = [],
     ): string {
-        $options = ['--compress', ...$options];
-        if ($compressionPreset !== null) {
-            $options[] = '-' . $compressionPreset;
-        }
         try {
-            return self::applyFilter($options, $data);
-        } catch (Throwable $reason) {
+            return static::filterFactory()->compress($compressionPreset, $options)->filter($data);
+        } catch (FilterException $reason) {
             throw new (static::compressException())(__METHOD__, $data, $reason);
         }
     }
@@ -46,18 +40,12 @@ abstract class XzUtils
         string $data,
         array $options = [],
     ): string {
-        $options = ['--decompress', ...$options];
         try {
-            return self::applyFilter($options, $data);
-        } catch (Throwable $reason) {
+            return static::filterFactory()->decompress($options)->filter($data);
+        } catch (FilterException $reason) {
             throw new (static::decompressException())(__METHOD__, $data, $reason);
         }
     }
-
-    /**
-     * @return 'lzma'|'xz'
-     */
-    abstract protected static function command(): string;
 
     /**
      * @return class-string<TCompressException&Exception\CouldNotCompressData>
@@ -69,20 +57,5 @@ abstract class XzUtils
      */
     abstract protected static function decompressException(): string;
 
-    /**
-     * @param array<non-empty-string> $options
-     */
-    private static function applyFilter(array $options, string $input): string
-    {
-        $process = new Process([
-            static::command(),
-            ...$options,
-        ]);
-        $process->setInput($input);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-        return $process->getOutput();
-    }
+    abstract protected static function filterFactory(): FilterFactory;
 }
