@@ -9,11 +9,6 @@ namespace PetrKnap\XzUtils;
  */
 final class Xz extends XzUtils
 {
-    protected static function command(): string
-    {
-        return 'xz';
-    }
-
     protected static function compressException(): string
     {
         return Exception\XzCouldNotCompressData::class;
@@ -22,5 +17,10 @@ final class Xz extends XzUtils
     protected static function decompressException(): string
     {
         return Exception\XzCouldNotDecompressData::class;
+    }
+
+    protected static function filterFactory(): FilterFactory
+    {
+        return FilterFactory::xz();
     }
 }

@@ -9,11 +9,6 @@ namespace PetrKnap\XzUtils;
  */
 final class Lzma extends XzUtils
 {
-    protected static function command(): string
-    {
-        return 'lzma';
-    }
-
     protected static function compressException(): string
     {
         return Exception\LzmaCouldNotCompressData::class;
@@ -22,5 +17,10 @@ final class Lzma extends XzUtils
     protected static function decompressException(): string
     {
         return Exception\LzmaCouldNotDecompressData::class;
+    }
+
+    protected static function filterFactory(): FilterFactory
+    {
+        return FilterFactory::lzma();
     }
 }
