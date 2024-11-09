@@ -14,7 +14,10 @@ final class Xz extends XzUtils
         return Exception\XzCouldNotCompressData::class;
     }
 
-    protected static function decompressException(): string
+    /**
+     * @internal public for testing purposes only
+     */
+    public static function decompressException(): string
     {
         return Exception\XzCouldNotDecompressData::class;
     }

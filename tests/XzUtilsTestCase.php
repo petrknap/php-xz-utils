@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PetrKnap\XzUtils;
 
+use PetrKnap\Shorts\Exception\CouldNotProcessData;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 #[CoversClass(FilterFactory::class)]
 abstract class XzUtilsTestCase extends TestCase
@@ -31,11 +33,19 @@ abstract class XzUtilsTestCase extends TestCase
         );
     }
 
-    final public function testDecompressThrowsOnWrongData(): void
+    final public function testDecompressThrowsCorrectlyOnWrongData(): void
     {
-        self::expectException(Exception\CouldNotDecompressData::class);
+        self::expectException(Exception\Exception::class);
 
-        static::getInstance()->decompress('?');
+        try {
+            static::getInstance()->decompress('wrong data');
+        } catch (Throwable $throwable) {
+            self::assertInstanceOf(call_user_func([static::getInstance()::class, 'decompressException']), $throwable);
+            /** @var CouldNotProcessData $throwable */
+            self::assertSame('wrong data', $throwable->getData());
+
+            throw $throwable;
+        }
     }
 
     public static function data(): array

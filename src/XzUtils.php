@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace PetrKnap\XzUtils;
 
 use PetrKnap\ExternalFilter\Exception\FilterException;
+use PetrKnap\Shorts\Exception\CouldNotProcessData;
 
 /**
  * @internal shared logic
  *
- * @template TCompressException of Exception\CouldNotCompressData
- * @template TDecompressException of Exception\CouldNotDecompressData
+ * @template TCompressException of Exception\Exception
+ * @template TDecompressException of Exception\Exception
  */
 abstract class XzUtils
 {
     /**
      * @param array<non-empty-string>|null $options
      *
-     * @throws TCompressException&Exception\CouldNotCompressData
+     * @throws TCompressException
      */
     final public function compress(
         string $data,
@@ -34,7 +35,7 @@ abstract class XzUtils
     /**
      * @param array<non-empty-string>|null $options
      *
-     * @throws TDecompressException&Exception\CouldNotDecompressData
+     * @throws TDecompressException
      */
     final public function decompress(
         string $data,
@@ -48,12 +49,12 @@ abstract class XzUtils
     }
 
     /**
-     * @return class-string<TCompressException&Exception\CouldNotCompressData>
+     * @return class-string<TCompressException&CouldNotProcessData<string>>
      */
     abstract protected static function compressException(): string;
 
     /**
-     * @return class-string<TDecompressException&Exception\CouldNotDecompressData>
+     * @return class-string<TDecompressException&CouldNotProcessData<string>>
      */
     abstract protected static function decompressException(): string;
 
