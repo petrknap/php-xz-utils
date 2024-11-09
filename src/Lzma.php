@@ -14,7 +14,10 @@ final class Lzma extends XzUtils
         return Exception\LzmaCouldNotCompressData::class;
     }
 
-    protected static function decompressException(): string
+    /**
+     * @internal public for testing purposes only
+     */
+    public static function decompressException(): string
     {
         return Exception\LzmaCouldNotDecompressData::class;
     }
